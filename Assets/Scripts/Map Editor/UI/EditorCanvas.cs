@@ -50,15 +50,17 @@ public class EditorCanvas : MonoBehaviour
         {
             if(t.GetComponent<LayerPanel>())
                 Destroy(t.gameObject);
+                Debug.Log("delete");
+
         }
-        Debug.Log("delete");
-        foreach(string layer in mapManager.types)
+        foreach (string layer in mapManager.types)
 		{
             GameObject LayerCLone = Instantiate(LayerPref, Vector2.zero, Quaternion.identity, LayersPanel.transform);
             LayerCLone.transform.localPosition = new Vector2(0, (-i - 1) * 30);
             Debug.Log(LayerCLone.transform.GetSiblingIndex());
-            LayerCLone.GetComponentInChildren<InputField>().text = mapManager.types[LayerCLone.transform.GetSiblingIndex() - 2];
-            LayerCLone.GetComponentInChildren<Image>().color = mapManager.colors[LayerCLone.transform.GetSiblingIndex() - 2];
+            Debug.Log(LayerCLone.transform.GetSiblingIndex() - 2);
+            LayerCLone.GetComponentInChildren<InputField>().text = mapManager.types[i];
+            LayerCLone.GetComponentInChildren<Image>().color = mapManager.colors[i];
             i++;
 		}
         GameObject.Find("Add Layer").transform.localPosition = new Vector2(9, (-i - 1) * 30);
@@ -72,9 +74,10 @@ public class EditorCanvas : MonoBehaviour
 
     public void AddLayer()
 	{
+        mapManager.types.Add("New Layer");
         UpdateLayers();
-        //mapManager.types.Add("New Layer");
-	}
+
+    }
     public void SaveMap()
 	{
         MapSaveAndLoad.SaveMap(new MapData(mapManager.width, mapManager.height, mapManager.tiles));

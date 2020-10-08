@@ -21,6 +21,7 @@ public class LayerPanel : MonoBehaviour
 	{
         //Debug.Log("button");
         Debug.Log(GetComponentInChildren<InputField>().text);
+        Debug.Log(transform.GetSiblingIndex());
         FindObjectOfType<MapManager>().selectedType = transform.GetSiblingIndex() - 2;
 	}
 }
