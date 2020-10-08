@@ -5,7 +5,7 @@ using UnityEngine;
 public enum TileType
 {
     floor,
-    wall,
+    wall
 }
 
 public class MapManager : MonoBehaviour
@@ -14,11 +14,18 @@ public class MapManager : MonoBehaviour
     public int height;
     public Tile[,] tiles;
     public Tile tile, tileClone;
+    public List<string> types;
+    public int selectedType;
     public float tileSize;
-    public bool moving; 
+    public bool moving;
+    public Color[] colors;
     // Start is called before the first frame update
     void Start()
     {
+        types = new List<string>();
+        types.Add("floor");
+        types.Add("walls");
+        types.Add("lava");
         width = height = 10;
         moving = true;
         RecreateMap();
@@ -33,7 +40,7 @@ public class MapManager : MonoBehaviour
     public void RecreateMap()
 	{
         ClearMap();
-        Debug.Log(width + ", " + height);
+        //Debug.Log(width + ", " + height);
         tiles = new Tile[width, height];
         for (int y = 0; y < height; y++)
 		{
@@ -54,17 +61,52 @@ public class MapManager : MonoBehaviour
             for (int x = 0; x < width; x++)
             {
                 tileClone = tiles[x, y];
-                if (tileClone.tileType == TileType.floor)
-                    tileClone.GetComponent<SpriteRenderer>().color = Color.green;
-                else if (tileClone.tileType == TileType.wall)
-                    tileClone.GetComponent<SpriteRenderer>().color = Color.red;
+                tileClone.GetComponent<SpriteRenderer>().color = colors[tileClone.type];
             }
         }
+    }
+
+    public void RecreateMap(MapData md)
+	{
+        width = md.Width;
+        height = md.Width;
+        tiles = new Tile[width, height];
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                tileClone = Instantiate(tile, transform);
+                tileClone.transform.localPosition = new Vector2(x, y) * tileSize;
+                tileClone.type = md.Tiles[x, y];
+                tiles[x, y] = tileClone;
+            }
+        }
+        UpdateMap();
     }
 
     public void ClearMap()
 	{
         foreach (Transform t in transform)
             Destroy(t.gameObject);
+	}
+}
+
+[System.Serializable]
+public class MapData
+{
+    public int Height, Width;
+    public int[,] Tiles;
+    public MapData(int width, int height, Tile[,] tiles)
+	{
+        Width = width;
+        Height = height;
+        Tiles = new int[Width, Height];
+        for (int y = 0; y < Height; y++)
+		{
+            for(int x = 0; x < Width; x++)
+			{
+                Tiles[x, y] = tiles[x, y].type;
+			}
+		}
 	}
 }

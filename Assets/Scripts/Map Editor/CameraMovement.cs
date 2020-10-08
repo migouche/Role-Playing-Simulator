@@ -15,6 +15,10 @@ public class CameraMovement : MonoBehaviour
     void Update()
     {
         if (FindObjectOfType<MapManager>().moving && Input.GetMouseButton(0))
-            transform.Translate(new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), 0));// * sensitivity);
+            transform.Translate(new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), 0) * Time.deltaTime * sensitivity);
+
+        if(Input.GetMouseButton(2))
+            transform.Translate(new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), 0) * Time.deltaTime * sensitivity);
+
     }
 }
