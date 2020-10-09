@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 //using UnityEngine.UI;
 public enum TileType
 {
@@ -71,6 +72,7 @@ public class MapManager : MonoBehaviour
         width = md.Width;
         height = md.Width;
         tiles = new Tile[width, height];
+        types = md.Types;
         for (int y = 0; y < height; y++)
         {
             for (int x = 0; x < width; x++)
@@ -96,11 +98,13 @@ public class MapData
 {
     public int Height, Width;
     public int[,] Tiles;
-    public MapData(int width, int height, Tile[,] tiles)
+    public List<string> Types;
+    public MapData(int width, int height, Tile[,] tiles, List<string> types)
 	{
         Width = width;
         Height = height;
         Tiles = new int[Width, Height];
+        Types = types;
         for (int y = 0; y < Height; y++)
 		{
             for(int x = 0; x < Width; x++)

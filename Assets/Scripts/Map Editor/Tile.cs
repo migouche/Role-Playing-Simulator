@@ -20,34 +20,27 @@ public class Tile : MonoBehaviour
     {
         
     }
-	private void OnMouseDown()
-	{
+
+    private void OnMouseEnter()
+    {
         bool clicked = false;
-        /*if (!mapManager.moving)
-		{
-            if (tileType == TileType.floor && !clicked)
-            {
-                clicked = true;
-                Debug.Log("convert to wall");
-                tileType = TileType.wall;
-                mapManager.UpdateMap();
-
-            }
-
-            if(tileType == TileType.wall && !clicked)
-			{
-                clicked = true;
-                Debug.Log("convert to floor");
-                tileType = TileType.floor;
-                mapManager.UpdateMap();
-			}
-        }*/
-
-        if(!mapManager.moving && !clicked)
-		{
+        if (!clicked && Input.GetMouseButton(0))    
+        {
             clicked = true;
             type = mapManager.selectedType;
             mapManager.UpdateMap();
-		}
-	}
+
+        }
+    }
+	private void OnMouseDown()
+	{
+        bool clicked = false;
+        if (!clicked)
+        {
+            clicked = true;
+            type = mapManager.selectedType;
+            mapManager.UpdateMap();
+
+        }
+    }
 }

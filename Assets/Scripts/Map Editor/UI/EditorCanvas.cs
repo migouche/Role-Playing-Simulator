@@ -14,7 +14,6 @@ public class EditorCanvas : MonoBehaviour
     void Start()
     {
         LayersPanel = GameObject.Find("Layers");
-        GameObject.Find("Mode Text").GetComponent<Text>().text = "Mode: Move";
         UpdateLayers();
     }
 
@@ -35,13 +34,6 @@ public class EditorCanvas : MonoBehaviour
         mapManager.height = Convert.ToInt32(h);
         mapManager.RecreateMap();
 	}
-
-    public void ToggleMode()
-	{
-        mapManager.moving = !mapManager.moving;
-        GameObject.Find("Mode Text").GetComponent<Text>().text = mapManager.moving ? "Mode: Move" : "Mode: Edit";
-
-    }
 
     public void UpdateLayers()
 	{
@@ -80,12 +72,13 @@ public class EditorCanvas : MonoBehaviour
     }
     public void SaveMap()
 	{
-        MapSaveAndLoad.SaveMap(new MapData(mapManager.width, mapManager.height, mapManager.tiles));
+        MapSaveAndLoad.SaveMap(new MapData(mapManager.width, mapManager.height, mapManager.tiles, mapManager.types), "test map");
 	}
 
     public void LoadMap()
 	{
-        MapData md = MapSaveAndLoad.LoadMap();
+        MapData md = MapSaveAndLoad.LoadMap("test map");
         mapManager.RecreateMap(md);
+        UpdateLayers();
 	}
 }

@@ -6,18 +6,21 @@ using System.IO;
 
 public static class MapSaveAndLoad
 {
-	public static void SaveMap(MapData mp)
+	public static string MapPath = Application.persistentDataPath + "/maps/";
+	public static void SaveMap(MapData mp, string mapName)
 	{
+		if (!Directory.Exists(MapPath))
+			Directory.CreateDirectory(MapPath);
 		BinaryFormatter bn = new BinaryFormatter();
-		string path = Application.persistentDataPath + "/maptest.rps-map";
+		string path = MapPath + mapName + ".rcs-map";
 		FileStream stream = new FileStream(path, FileMode.Create);
 		bn.Serialize(stream, mp);
 		stream.Close();
 	}
 
-	public static MapData LoadMap()
+	public static MapData LoadMap(string mapName)
 	{
-		string path = Application.persistentDataPath + "/maptest.rps-map";
+		string path = MapPath + mapName + ".rcs-map";
 		if (File.Exists(path))
 		{
 			BinaryFormatter bn = new BinaryFormatter();
