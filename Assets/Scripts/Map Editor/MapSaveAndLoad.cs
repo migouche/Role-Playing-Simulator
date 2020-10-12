@@ -3,24 +3,25 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.SceneManagement;
 
 public static class MapSaveAndLoad
 {
-	public static string MapPath = Application.persistentDataPath + "/maps/";
-	public static void SaveMap(MapData mp, string mapName)
+	public static string CurrentMap;
+	public static void SaveMap(MapData mp)
 	{
-		if (!Directory.Exists(MapPath))
-			Directory.CreateDirectory(MapPath);
+		if (!Directory.Exists(MapSelectorManager.maps.path))
+			Directory.CreateDirectory(MapSelectorManager.maps.path);
 		BinaryFormatter bn = new BinaryFormatter();
-		string path = MapPath + mapName + ".rcs-map";
+		string path = MapSelectorManager.maps.path + CurrentMap + MapSelectorManager.Maps.EXTENSION;
 		FileStream stream = new FileStream(path, FileMode.Create);
 		bn.Serialize(stream, mp);
 		stream.Close();
 	}
 
-	public static MapData LoadMap(string mapName)
+	public static MapData LoadMap()
 	{
-		string path = MapPath + mapName + ".rcs-map";
+		string path = MapSelectorManager.maps.path + CurrentMap + MapSelectorManager.Maps.EXTENSION;
 		if (File.Exists(path))
 		{
 			BinaryFormatter bn = new BinaryFormatter();
@@ -31,5 +32,20 @@ public static class MapSaveAndLoad
 			Debug.LogError(path + " does not exist!");
 			return null;
 		}
+	}
+
+	public static void RenameMap(string newname)
+	{
+		if (File.Exists(MapSelectorManager.maps.path + CurrentMap + MapSelectorManager.Maps.EXTENSION))
+		{
+			File.Move(MapSelectorManager.maps.path + CurrentMap + MapSelectorManager.Maps.EXTENSION,
+				MapSelectorManager.maps.path + newname + MapSelectorManager.Maps.EXTENSION);
+		}
+		CurrentMap = newname;
+	}
+	public static void OpenEditor(string map)
+	{
+		CurrentMap = map;
+		SceneManager.LoadScene("Editor");
 	}
 }

@@ -14,7 +14,7 @@ public class CameraMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetMouseButton(2))
+        if(Input.GetMouseButton(2) || Input.GetMouseButton(1))
             transform.Translate(new Vector3(-Input.GetAxis("Mouse X"), -Input.GetAxis("Mouse Y"), 0) * Time.deltaTime * sensitivity);
 
     }

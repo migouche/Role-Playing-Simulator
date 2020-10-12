@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class EditorCanvas : MonoBehaviour
@@ -10,10 +11,13 @@ public class EditorCanvas : MonoBehaviour
     public MapManager mapManager;
     public GameObject LayersPanel;
     public GameObject LayerPref;
+    public InputField MapNameField;
     // Start is called before the first frame update
     void Start()
     {
         LayersPanel = GameObject.Find("Layers");
+        MapNameField = GameObject.Find("Map Name Field").GetComponent<InputField>();
+        MapNameField.text = MapSaveAndLoad.CurrentMap;
         UpdateLayers();
     }
 
@@ -72,13 +76,16 @@ public class EditorCanvas : MonoBehaviour
     }
     public void SaveMap()
 	{
-        MapSaveAndLoad.SaveMap(new MapData(mapManager.width, mapManager.height, mapManager.tiles, mapManager.types), "test map");
+        MapSaveAndLoad.SaveMap(new MapData(mapManager.width, mapManager.height, mapManager.tiles, mapManager.types));
+	}
+    
+    public void RenameMap(string name)
+	{
+        MapSaveAndLoad.RenameMap(name);
 	}
 
-    public void LoadMap()
+    public void LoadScene(string name)
 	{
-        MapData md = MapSaveAndLoad.LoadMap("test map");
-        mapManager.RecreateMap(md);
-        UpdateLayers();
+        SceneManager.LoadScene(name);
 	}
 }

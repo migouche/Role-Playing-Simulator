@@ -29,7 +29,7 @@ public class MapManager : MonoBehaviour
         types.Add("lava");
         width = height = 10;
         moving = true;
-        RecreateMap();
+        RecreateMap(MapSaveAndLoad.LoadMap());
     }
 
     // Update is called once per frame
@@ -37,7 +37,7 @@ public class MapManager : MonoBehaviour
     {
         
     }
-
+        
     public void RecreateMap()
 	{
         ClearMap();
@@ -113,4 +113,19 @@ public class MapData
 			}
 		}
 	}
+
+    public MapData(int width, int height, int[,] tiles, List<string> types)
+    {
+        Width = width;
+        Height = height;
+        Tiles = new int[Width, Height];
+        Types = types;
+        for (int y = 0; y < Height; y++)
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                Tiles[x, y] = tiles[x, y];
+            }
+        }
+    }
 }
