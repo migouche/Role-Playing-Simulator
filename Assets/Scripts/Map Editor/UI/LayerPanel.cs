@@ -17,4 +17,10 @@ public class LayerPanel : MonoBehaviour
 	{
         FindObjectOfType<MapManager>().types[transform.GetSiblingIndex() - 2] = name;
 	}
+
+    public void Delete()
+	{
+        FindObjectOfType<MapManager>().RemoveLayer(transform.GetSiblingIndex() - 2);
+        FindObjectOfType<EditorCanvas>().UpdateLayers();
+    }
 }

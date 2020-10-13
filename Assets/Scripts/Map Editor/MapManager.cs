@@ -23,12 +23,14 @@ public class MapManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        /*
         types = new List<string>();
         types.Add("floor");
         types.Add("walls");
         types.Add("lava");
         width = height = 10;
         moving = true;
+        */
         RecreateMap(MapSaveAndLoad.LoadMap());
     }
 
@@ -37,6 +39,19 @@ public class MapManager : MonoBehaviour
     {
         
     }
+
+    public void RemoveLayer(int layer)
+	{
+        foreach(Tile t in tiles)
+		{
+            if (t.type == layer)
+                t.type = 0;
+            else if (t.type > layer)
+                t.type--;
+		}
+        types.RemoveAt(layer);
+        UpdateMap();
+	}
         
     public void RecreateMap()
 	{

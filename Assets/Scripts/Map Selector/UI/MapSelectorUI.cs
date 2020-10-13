@@ -37,7 +37,7 @@ public class MapSelectorUI : MonoBehaviour
 		{
             if (t != AddLayer.transform && t != this.transform)
 			{
-                Destroy(t);
+                Destroy(t.gameObject);
 			}
 		}
 
@@ -66,5 +66,11 @@ public class MapSelectorUI : MonoBehaviour
         MapSaveAndLoad.CurrentMap = "new map";
         MapSaveAndLoad.SaveMap(new MapData(10, 10, new int[10, 10], new List<string>() { "floor", "wall", "lava" }));
         SceneManager.LoadScene("Editor");
+	}
+
+    public void DeleteMap()
+	{
+        File.Delete(MapSelectorManager.maps.path + selectedMap + MapSelectorManager.Maps.EXTENSION);
+        ReloadMapList();
 	}
 }
